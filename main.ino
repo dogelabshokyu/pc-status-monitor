@@ -16,61 +16,30 @@ Adafruit_NeoPixel pixels(NUMPIXELS, DRGB_PIN, NEO_GRB + NEO_KHZ800);
 
 Adafruit_SSD1306 display(SCREEN_W, SCREEN_H, &Wire, OLED_RESET);
 
-String sig;
+char Ard1;
+String sig, value1;
 String cpu, cpu_clock, cpu_load, cpu_temp, mb, fan, pump;
-char check[2];
+char check[1];
+
+int LED_BUILTIN = 14;
+
 void setup() {
   Serial.begin(9600);
   pixels.begin(); //neopixel start
 
   display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADR); //oled display start
   display.clearDisplay();
+  pinMode(LED_BUILTIN,OUTPUT);
 }
-/*
-void loop() {
-  pixels.clear(); // Set all pixel colors to 'off'
-  display.clearDisplay();
-
-  for(int i=0; i<255; i++)
-  {
-    for(int j=0; j<NUMPIXELS; j++)
-    {
-      pixels.setPixelColor(j, pixels.Color(0, 0, i));
-      pixels.show();
-    }
-    oledprint(0, 0, String(i));
-    delay(25);
-  }
-  for(int i=255; i>0; i--)
-  {
-    for(int j=0; j<NUMPIXELS; j++)
-    {
-      pixels.setPixelColor(j, pixels.Color(0, 0, i));
-      pixels.show();
-    }
-    oledprint(0, 0, String(i));
-    delay(25);
-  }
-  display.clearDisplay();
-  delay(1000);
-}
-*/
 
 void loop()
 {
-  while(Serial.available())
-  {
-    char wait = Serial.read();
-    sig.concat(wait);
-  }
   display.clearDisplay();
-  oledprint(0, 0, sig);
-  delay(1000);
+  oledprint(0, 0, Serial.readString());
 }
 
 void oledprint(int x, int y, String showprint)
 {
-  display.clearDisplay();
   display.setTextSize(1);
   display.setCursor(x, y);
   display.setTextColor(WHITE);
